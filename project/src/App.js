@@ -1,19 +1,39 @@
-import './App.css';
-import logo from './assets/icon/logo.svg'
-import React, { useState } from 'react';
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import Header from "./component/layouts/Header";
+import Footer from "./component/layouts/Footer";
+
 function App() {
-  const [inputValue, setInputValue] = useState('');
+  const [windowSize, setWindowSize] = useState({
+    width: undefined,
+    hight: undefined,
+  });
+  const [isMoble, setIsMoble] = useState(false);
+  useEffect(() => {
+    const handleSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener("resize", handleSize);
+    handleSize();
+    return () => window.removeEventListener("resize", handleSize);
+  }, []);
 
-  // Hàm xử lý sự kiện onBlurs
-  const handleBlur = (event) => {
-    console.log('Input lost focus');
-    // Thực hiện các thao tác xử lý khi phần tử mất focus, ví dụ: kiểm tra dữ liệu, xác thực, lưu trữ, vv.
-  };
-
+  useEffect(() => {
+    console.log(windowSize);
+    if (windowSize.width < 500) {
+      setIsMoble(true);
+      console.log("mobile");
+    } else {
+      setIsMoble(false);
+    }
+  }, [windowSize]);
   return (
-    <div>
-      <h1>hello</h1>
-     
+    <div className="">
+      {/* <Header isMoble={isMoble}></Header> */}
+      <Footer></Footer>
     </div>
   );
 }
