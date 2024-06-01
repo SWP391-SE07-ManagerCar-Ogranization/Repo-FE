@@ -11,8 +11,8 @@ function Header(props) {
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <header className="flex  justify-center shadow-md">
-      <div className=" flex items-center justify-evenly gap-10 w-[1150px] mobile:h-[50px] desktop:h-[82px] ">
+    <header className="flex justify-center shadow-md  fixed top-0 right-0 left-0 ">
+      <div className=" flex items-center justify-evenly gap-10 w-[1150px] mobile:h-[50px] desktop:h-[82px]  ">
         <div>
           <div className="">
             <img src={images} width={"102px"} alt="logo" className=""></img>

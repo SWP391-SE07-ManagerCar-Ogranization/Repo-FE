@@ -32,7 +32,7 @@ function App() {
   }, [windowSize]);
   return (
     <div className="">
-      {/* <Header isMoble={isMoble}></Header> */}
+      <Header isMoble={isMoble}></Header>
       <Footer></Footer>
     </div>
   );

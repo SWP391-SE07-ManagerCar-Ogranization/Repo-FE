@@ -14,7 +14,7 @@ import tw from "../../../assets/icons/tw.svg";
 function Footer(props) {
   const { label, p1, p2, p3 } = props;
   return (
-    <footer className="w-full flex flex-col items-center gap-10  h-[1100px]">
+    <footer className="w-full flex flex-col items-center gap-10  h-[1100px] mt-[82px]">
       <div
         className=" gap-10 flex flex-row items-center justify-center bg-orange-500 w-[1100px] h-[300px] rounded-md mobile:hidden
       "
@@ -51,9 +51,9 @@ function Footer(props) {
           <img src={Car} className="w-[220px] mb-10 " alt="Car"></img>
         </div>
       </div>
-      <div className="w-full flex items-center justify-center mobile:flex-col">
-        <div className="flex w-[1100px]  flex-row items-center justify-between">
-          <div className="flex flex-col">
+      <div className="w-full flex items-center justify-center mobile:bg-pink-200 ipad:bg-inherit desktop:bg-inherit">
+        <div className="flex desktop:w-[1100px]  desktop:flex-row desktop:items-center justify-between  mobile:w-[400px] mobile:flex-col mobile:items-start ">
+          <div className="flex flex-col ">
             <div className="flex items-center">
               <h2 className="font-bold text-3xl">FCar</h2>
               <img src={Logo} className="h-[40px]" alt="logo" />
@@ -67,7 +67,7 @@ function Footer(props) {
               <img src={tw}></img>
             </div>
           </div>
-          <div className="flex flex-row ">
+          <div className="flex flex-row mobile:max-sm:grid  mobile:max-sm:grid-cols-2  ">
             <Itemfooter
               label={"Company"}
               p1={"About"}
@@ -90,11 +90,11 @@ function Footer(props) {
         </div>
       </div>
       <span className=" border-[0.5px] w-[1100px] border-gray-300 mobile:hidden"></span>
-      <div className="flex justify-between flex-row gap-[846px]">
+      <div className="flex justify-between flex-row desktop:max-xl:gap-[846px]  mobile:max-sm:gap-[100px] ">
         <span className="text-gray-600 text-sm mr-4">
           Copyright, Trabook 2022. All rights reserved
         </span>
-        <div className="text-gray-600 text-sm">Terms & Conditions</div>
+        <div className="text-gray-600 text-sm ">Terms & Conditions</div>
       </div>
     </footer>
   );
