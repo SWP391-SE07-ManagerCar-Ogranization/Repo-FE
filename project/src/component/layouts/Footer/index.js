@@ -16,7 +16,7 @@ function Footer(props) {
   return (
     <footer className="w-full flex flex-col items-center gap-10  h-[1100px] mt-[82px]">
       <div
-        className=" gap-10 flex flex-row items-center justify-center bg-orange-500 w-[1100px] h-[300px] rounded-md mobile:hidden
+        className=" gap-10 flex flex-row items-center justify-center bg-orange-500 w-[1100px] h-[300px] rounded-md mobile:max-sm:hidden
       "
       >
         <div className="relative  w-[300px] h-[300px]">

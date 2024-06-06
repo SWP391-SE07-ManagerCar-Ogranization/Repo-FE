@@ -3,14 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import GobalStyles from "./component/GlobalStyles";
+import GlobalStyles from "./component/GlobalStyles";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <GobalStyles>
+    <GlobalStyles>
       <App />
-    </GobalStyles>
+    </GlobalStyles>
   </React.StrictMode>
 );
 
