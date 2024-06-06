@@ -24,7 +24,7 @@ function LoginPage2() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
-        navigate("/");
+        navigate("/profile");
       } else {
         setError("Invalid email or password");
       }
@@ -37,7 +37,7 @@ function LoginPage2() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
-        navigate("/");
+        navigate("/profile");
       } else {
         setError(userData.message);
       }
@@ -52,15 +52,17 @@ function LoginPage2() {
 
   const onSuccessGoogle = async (credentialResponse) => {
     const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    console.log(credentialResponseDecoded);
     const newFormData = {
       name: credentialResponseDecoded.name,
       email: credentialResponseDecoded.email,
+      image: credentialResponseDecoded.picture
     };
     handleSubmitGoogle(newFormData);
   };
 
   return (
-    <section className="bg-gradient-to-r from-red-50 via-red-200 to-red-400 h-screen">
+    <section className="bg-gradient-to-r from-red-50 via-red-200 to-red-400 h-screen" >
       <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
         <div className="sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6 text-gray-400">
           <img src={logo} alt="logo" className="mx-auto"/>
@@ -116,7 +118,7 @@ function LoginPage2() {
               </p>
             )}
             <button
-              className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 w-full text-white"
+              className="bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 w-full text-white"
               type="submit"
             >
               Login
