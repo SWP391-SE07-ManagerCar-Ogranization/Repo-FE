@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn {
+    @apply text-[20px] p-[10px] mr-[24px] cursor-pointer;
+  }
+
+}

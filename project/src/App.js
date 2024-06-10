@@ -10,6 +10,10 @@ import UpdatePass from "./component/auth/UpdatePass";
 import { ToastContainer } from 'react-toastify';
 import Payment from "./component/payment/Payment";
 import Test from "./component/Test";
+import SearchGroupCar from "./component/carpool/searchGroupCar/SearchGroupCar";
+import ListGroupCar from "./component/carpool/listGroupCar/ListGroupCar";
+import HomeCarPool from "./component/carpool/HomeCarpool/Home";
+import Mytrip from "./component/carpool/Mytrip";
 
 function App() {
   return (
@@ -28,6 +32,11 @@ function App() {
           )}
           <Route path="/payment" element={<Payment/>}/>
           <Route path="/test" element={<Test/>}/>
+            // thinh
+            <Route exact path="/home-car-pool" element={<HomeCarPool />} />
+            <Route path="/searchGroupCar/:groupCarAndUserString" element={<SearchGroupCar />} />
+            <Route path="/mytrip/:id" element={<Mytrip/>} />
+            <Route path="/listGroupCar/:userString" element={<ListGroupCar/>} />
         </Routes>
       </GoogleOAuthProvider>
       <ToastContainer />
