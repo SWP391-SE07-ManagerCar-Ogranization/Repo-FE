@@ -30,7 +30,7 @@ function LoginPage() {
       if(userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
-        navigate("/profile");
+        navigate("/update-password");
       } else {
         setError(userData.message);
         console.log(userData.message);

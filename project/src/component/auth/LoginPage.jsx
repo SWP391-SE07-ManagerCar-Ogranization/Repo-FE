@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { signupValidation } from "../../config/signupValidation";
+import { signupValidation } from "../../config/SignupValidation";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "../../service/UserService";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/icon/logo.svg";
+import { toast } from "react-toastify";
 
-function LoginPage2() {
+function LoginPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const initValues = {
@@ -24,7 +25,8 @@ function LoginPage2() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
-        navigate("/profile");
+        toast.success("Login Sucessfully !");
+        // navigate("/profile");
       } else {
         setError("Invalid email or password");
       }
@@ -37,6 +39,7 @@ function LoginPage2() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
+        toast.success("Login Sucessfully !");
         navigate("/profile");
       } else {
         setError(userData.message);
@@ -169,4 +172,4 @@ function LoginPage2() {
   );
 }
 
-export default LoginPage2;
+export default LoginPage;

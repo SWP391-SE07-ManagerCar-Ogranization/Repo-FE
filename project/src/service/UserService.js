@@ -54,6 +54,16 @@ export const getYourProfile = async (token) =>{
     }
 }
 
+export const getFeedbackProfileDriver = async (id) =>{
+    try {
+        const  temp = await axios.get(`http://localhost:8080/public/feedback-driver/find-all/${id}`);
+        return temp.data;
+    }catch (e) {
+        console.log(e);
+        throw e;
+    }
+}
+
 export const updateUser = async (userId, userData, token) =>{
     try {
         const  temp = await axios.put(`http://localhost:8080/adminuser/update/${userId}`, userData, {
@@ -65,6 +75,17 @@ export const updateUser = async (userId, userData, token) =>{
         throw e;
     }
 }
+
+export const changePass = async (token, password) =>{
+    try {
+        const  temp = await axios.post(`http://localhost:8080/auth/change-pass`, {token,password});
+        return temp.data;
+    }catch (e) {
+        console.log(e);
+        throw e;
+    }
+}
+
 
 export const logout = async() => {
     localStorage.removeItem('token')

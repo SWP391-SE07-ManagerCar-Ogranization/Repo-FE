@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../layouts/Header";
-import Footer from "../../layouts/Footer";
+// import Footer from "../../layouts/Footer";
 import cv from '../../assets/image/cv2.jpg'
 import './style.css'
 function HomePage() {
