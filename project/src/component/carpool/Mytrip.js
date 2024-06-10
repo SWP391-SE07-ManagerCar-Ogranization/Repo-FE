@@ -5,8 +5,8 @@ function ListGroupCar () {
 
   
   const [groupCars, setGroupCars] = useState([]);
-  const {userId} = useParams();
-  
+  const {id: userId} = useParams();
+  console.log("userId >>> ", userId)
   useEffect(()=>{
     loadGroupCar();
   }, [])
@@ -14,7 +14,7 @@ function ListGroupCar () {
   
 
   const loadGroupCar = async ()=>{
-      const result = await axios.get("http://localhost:8080/public/groupCars");
+      const result = await axios.get(`http://localhost:8080/public/groupCars`);
       setGroupCars(result.data);
   }
   return (
@@ -78,8 +78,9 @@ function ListGroupCar () {
         </thead>
         <tbody>
             {groupCars.map((groupCar)=>{
-                if(groupCar.customers.some((customer)=>customer.id==userId)==true){
-                console.log(groupCar.customers.some((customer)=>customer.id==userId))
+                if(groupCar.customers.some((customer)=>customer.id==userId)==true){     
+                  console.log(groupCar.customers.some((customer)=>customer.id==userId)==true)         
+                  console.log(groupCar)
                 return(
                   <tr key={groupCar.groupId} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td className="px-6 py-4">

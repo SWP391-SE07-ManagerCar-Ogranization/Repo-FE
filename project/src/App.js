@@ -1,15 +1,29 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
-import Header from "./component/layouts/Header";
-import Footer from "./component/layouts/Footer";
-import BookingTraditionnel from "./pages/BookingTraditionnel";
-
+import React from "react";
+import Mytrip from "./component/carpool/Mytrip";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SearchGroupCar from "./component/carpool/searchGroupCar/SearchGroupCar";
+import ListGroupCar from "./component/carpool/listGroupCar/ListGroupCar";
+import Home from "./component/carpool/HomeCarpool/Home";
 function App() {
   return (
     <div className="flex flex-col gap-10">
-      {/* <Header></Header> */}
-      <BookingTraditionnel></BookingTraditionnel>
-      {/* <Footer></Footer> */}
+      
+      
+        <Router>
+          {/* <Header></Header> */}
+          
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/searchGroupCar/:groupCarAndUserString" element={<SearchGroupCar />} />
+            <Route path="/mytrip/:id" element={<Mytrip/>} />
+            <Route path="/listGroupCar/:userString" element={<ListGroupCar/>} />
+            
+          </Routes>
+        </Router>
+      
+
+      
     </div>
   );
 }
