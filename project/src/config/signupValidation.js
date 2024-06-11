@@ -1,6 +1,6 @@
 import * as Yub from "yup";
 
-export const signupValidation = Yub.object({
+export const SignupValidation = Yub.object({
   email: Yub.string()
     .email("Please enter valid email")
     .required("Please enter email"),

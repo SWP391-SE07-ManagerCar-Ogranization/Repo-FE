@@ -11,6 +11,7 @@ import axios from "axios";
 import Select from "react-dropdown-select";
 import { RiMotorbikeFill } from "react-icons/ri";
 import { FaCar } from "react-icons/fa"; 
+import { toast } from "react-toastify";
 
 function Bookingcarpool(props) {
   
@@ -66,6 +67,7 @@ function Bookingcarpool(props) {
   const onSubmit = async (e) => { 
     e.preventDefault();
     await axios.post("http://localhost:8080/public/addGroupCar", groupCar);
+    toast.success("Create Successfully !");
     navigate(`/listGroupCar/${userString}`)
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { signupValidation } from "../../config/SignupValidation";
+import { SignupValidation } from "../../config/SignupValidation";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "../../service/UserService";
@@ -18,7 +18,7 @@ function LoginPage() {
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initValues,
-    validationSchema: signupValidation,
+    validationSchema: SignupValidation,
     onSubmit: async (values) => {
       const userData = await UserService.login(values.email, values.password);
       console.log(userData);
@@ -26,7 +26,7 @@ function LoginPage() {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
         toast.success("Login Sucessfully !");
-        // navigate("/profile");
+        navigate("/profile");
       } else {
         setError("Invalid email or password");
       }
@@ -146,7 +146,7 @@ function LoginPage() {
                 onError={() => {
                   console.log("Login Failed");
                 }}
-                useOneTap
+                // useOneTap
                 shape="pill"
               />
             </div>

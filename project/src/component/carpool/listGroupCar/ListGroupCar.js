@@ -48,13 +48,13 @@ function ListGroupCar() {
     setCheck(!check)
     setGroupIdDetail(id);
   };
-  const handleJoin = async (groupId) => {
-    try{
-      await axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupId}`)
-    }catch(error){
-      alert("Join fail")
-    }
-  }
+  // const handleJoin = async (groupId) => {
+  //   try{
+  //     await axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupId}`)
+  //   }catch(error){
+  //     alert("Join fail")
+  //   }
+  // }
   const loadGroupCar = async () => {
     const result = await axios.get(`http://localhost:8080/public/groupCars`);
     setGroupCars(result.data);
@@ -121,7 +121,7 @@ function ListGroupCar() {
                     <td className="px-6 py-4">
                     <button
                         className="flex flex-row w-[180px] font-Roboto font-bold rounded-md justify-center items-center h-[52px] bg-red-500 text-white-500"
-                        onClick={handleJoin(groupCar.groupId)}
+                        // onClick={handleJoin(groupCar.groupId)}
                       >
                         Join
                       </button>
