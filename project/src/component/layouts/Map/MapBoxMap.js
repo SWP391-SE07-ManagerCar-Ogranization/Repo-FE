@@ -11,6 +11,7 @@ import L from "leaflet";
 import LeafletGeocoder from "./LeafletGeocoder";
 import LeafletRoutingMachine from "./LeafletRoutingMachine";
 import Swal from "sweetalert2";
+import Logo from "../../../assets/icons/logo.svg";
 
 const UpdateMapCenter = ({ position }) => {
   const map = useMap();
@@ -126,19 +127,6 @@ function MapBoxMap(props) {
     } catch (error) {
       console.error(error);
     }
-    Swal.fire({
-      title: "Do you want to save the changes?",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      denyButtonText: `Don't save`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Saved!", "", "success");
-      } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
-    });
   };
 
   return (
@@ -146,31 +134,51 @@ function MapBoxMap(props) {
       <div className="absolute inset-0 bg-black opacity-50 z-40"></div>
       <div className="relative z-50 flex flex-row justify-center w-[1000px] h-[600px] bg-black bg-opacity-75 rounded-lg">
         <div className="flex flex-col items-center justify-center w-[400px] h-full bg-gray-500 bg-opacity-75 rounded-lg">
-          <div className="flex w-[3] h-[30px]">
+          <div className="flex mb-[20px] w-[300px]  h-[30px] items-center justify-between p-2">
             <IoIosCloseCircle
               onClick={() => setIsEdit(!isEdit)}
-              className="w-full h-full text-green-400 cursor-pointer"
+              className="text-green-400 cursor-pointer text-[30px]"
             />
+            <img src={Logo} alt="Company Logo" />
           </div>
-          <h2>{routeInfo}</h2>
+          <h2 className="text-white">{routeInfo}</h2>
           <div className="text-white text-2xl">Pickup: {theme.pickup}</div>
           <div className="text-white text-2xl">End: {theme.end}</div>
-          <div className="text-white text-2xl bottom-4">
+          <div className="text-white text-2xl mb-4">
             Pick-up date: {theme.selectedDate}
           </div>
-          <div className="text-white text-2xl bottom-4">
+          <div className="text-white text-2xl mb-4">
             Select item: {theme.selectedTime}
           </div>
-          <div className="text-white-500">
-            SelectedCarType: {theme.selectedCarType.label}
+          <div className="text-white text-2xl mb-4">
+            Selected Car Type: {theme.selectedCarType.label}
           </div>
           <div>
-            <PayMentMethod onChange={handlePayTypeChange}></PayMentMethod>
+            <PayMentMethod onChange={handlePayTypeChange} />
           </div>
-          <button onClick={handleSummit} className="text-white-500">
-            Summit
+          <button
+            onClick={() =>
+              Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  handleSummit();
+                  Swal.fire("Saved!", "", "success");
+                } else if (result.isDenied) {
+                  Swal.fire("Changes are not saved", "", "info");
+                }
+              })
+            }
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
+          >
+            Submit
           </button>
         </div>
+
         <div className="flex flex-col w-[800px] h-[300px] ">
           <div className="App">
             {/* <button className="text-white-500" onClick={handleSearchClick}>

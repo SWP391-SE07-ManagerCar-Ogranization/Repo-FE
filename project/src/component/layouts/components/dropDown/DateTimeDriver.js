@@ -1,47 +1,24 @@
 import React, { useState } from "react";
-import { ConfigProvider, DatePicker, Space, Typography } from "antd";
-import en from "antd/es/date-picker/locale/en_US";
-import enUS from "antd/es/locale/en_US";
-import dayjs from "dayjs";
-import buddhistEra from "dayjs/plugin/buddhistEra";
-dayjs.extend(buddhistEra);
-const { Title } = Typography;
 
-const buddhistLocale = {
-  ...en,
-  lang: {
-    ...en.lang,
-    fieldDateFormat: "BBBB-MM-DD",
-    fieldDateTimeFormat: "BBBB-MM-DD HH:mm:ss",
-    yearFormat: "BBBB",
-    cellYearFormat: "BBBB",
-  },
-};
-
-const defaultValue = dayjs("2024-01-01");
 const DateTimeDriver = () => {
-  const [] = useState();
+  const [dateDriver, setDateDriver] = useState("");
+  console.log("dateDriver:", dateDriver);
 
   return (
-    <Space direction="vertical" className="flex flex-row h-[76px]">
-      <div className="flex flex-col px-[0.75rem] ">
-        <label>Date</label>
-        <DatePicker
-          defaultValue={defaultValue}
-          locale={buddhistLocale}
-          className="w-[200px] h-[52px]"
+    <div className="flex flex-col">
+      <label className="font-Roboto font-bold">Time</label>
+      <div className="mr-5 flex flex-col w-[216px] items-center h-[52px] gap-5 rounded-md border-solid border-white-700 border-[1px] bg-slate-50 px-[0.75rem]">
+        <input
+          className="rounded-md w-[200px] h-[52px] border-black border-1px"
+          id="party"
+          type="datetime-local"
+          name="partydate"
+          value="2024-06-01T08:30"
+          onChange={(e) => setDateDriver(e.target.value)}
         />
       </div>
-      <div className="flex flex-col px-[0.75rem] h-[52px]">
-        <label>Time</label>
-        <DatePicker
-          defaultValue={defaultValue}
-          showTime
-          locale={buddhistLocale}
-          className="h-[52px] w-[200px] py-10"
-        />
-      </div>
-    </Space>
+    </div>
   );
 };
+
 export default DateTimeDriver;

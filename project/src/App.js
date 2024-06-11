@@ -4,12 +4,19 @@ import Header from "./component/layouts/Header";
 import Footer from "./component/layouts/Footer";
 import BookingDriverInvoice from "./pages/BookingDriverInvoice/Car";
 
+import MapBox from "./component/layouts/Map/MapBox";
+import { Route, Routes } from "react-router";
+
 function App() {
   return (
-    <div className="flex flex-col gap-10">
-      {/* <Header></Header> */}
-      <BookingDriverInvoice></BookingDriverInvoice>
-      {/* <Footer></Footer> */}
+    <div className="App">
+      <Routes>
+        <Route
+          path="/"
+          element={<BookingDriverInvoice></BookingDriverInvoice>}
+        />
+        <Route path="/showmap" element={<MapBox></MapBox>} />
+      </Routes>
     </div>
   );
 }

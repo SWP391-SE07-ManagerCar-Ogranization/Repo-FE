@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import DateTimeDriver from "../../component/layouts/components/dropDown/DateTimeDriver";
 
 function Driver() {
-  const [pickUpDriver, setPickupDriver] = useState();
-  const [returnDriver, setReturnDriver] = useState();
+  const [pickUpDriver, setPickupDriver] = useState("");
+  const [returnDriver, setReturnDriver] = useState("");
+  const [isDriver, setIsDriver] = useState(false);
+
+  const handleBookingDriver = (e) => {
+    e.preventDefault();
+    setIsDriver(!isDriver);
+  };
 
   return (
     <div className="flex">
@@ -43,10 +49,27 @@ function Driver() {
           <DateTimeDriver></DateTimeDriver>
         </div>
         <div className="flex mt-8 flex-col justify-center">
-          <button className="flex flex-row w-[180px] font-Roboto font-bold rounded-md justify-center items-center h-[52px] bg-orange-300 text-white-500">
+          <button
+            className="flex flex-row w-[180px] font-Roboto font-bold rounded-md justify-center items-center h-[52px] bg-orange-300 text-white-500"
+            onClick={handleBookingDriver}
+          >
             Show Map
           </button>
         </div>
+      </div>
+      <div className="mt-[100px]">
+        {/* {isDriver ? (
+          // <MapBoxMap
+            setIsEdit={setIsDriver}
+            // isEdit={isEdit}
+            // pickup={pickup}
+            // end={end}
+            // startPoint={startPoint}
+            // setStartPoint={setStartPoint}
+            // endPoint={endPoint}
+            // setEndPoint={setEndPoint}
+          // />
+        ) : null} */}
       </div>
     </div>
   );

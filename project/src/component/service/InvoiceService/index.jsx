@@ -25,3 +25,15 @@ export const sendOptionToDB = async (option) => {
     return null;
   }
 };
+
+export const createDriverInvoice = async (invoice) => {
+  try {
+    const res = await axios.post(
+      `${REST_API_BASE_URL}/addtran/invoice`,
+      invoice
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

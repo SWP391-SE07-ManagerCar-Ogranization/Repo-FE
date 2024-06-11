@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import L from "leaflet";
+import L, { marker } from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { useMap } from "react-leaflet";
 
-const LeafletRoutingMachine = ({ startPoint, endPoint }) => {
+const LeafletRoutingMachine = ({ startPoint, endPoint, onRouteFound }) => {
   const map = useMap();
   let DefaultIcon = L.icon({
     iconUrl: "/marche.gif",
@@ -39,14 +39,17 @@ const LeafletRoutingMachine = ({ startPoint, endPoint }) => {
         const { coordinates } = route;
 
         let index = 0;
+        if (marker1) {
+          map.removeLayer(marker1);
+        }
         const updateMarkerPosition = () => {
           if (index < coordinates.length) {
             const { lat, lng } = coordinates[index];
             marker1.setLatLng([lat, lng]);
             index++;
-            setTimeout(updateMarkerPosition, 100); // Adjust the timeout for speed control
+            setTimeout(updateMarkerPosition, 100);
           } else {
-            marker1.setLatLng(endPoint); // Ensure the marker ends up at the final destination
+            marker1.setLatLng(endPoint);
           }
         };
 
