@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { IoIosCloseCircle } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { Card } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
@@ -12,6 +11,7 @@ import L from "leaflet";
 import "./App.css"
 import LeafletGeocoder from '../map/LeafletGeocoder';
 import LeafletRoutingMachine from '../map/LeafletRoutingMachine';
+import * as TransactionService from '../../../service/TransactionService'
 
 function ListGroupCar() {
   const [userObject, setUserObject] = useState({});
@@ -38,11 +38,31 @@ function ListGroupCar() {
   const [routeInfo, setRouteInfo] = useState("");
   const [position, setPosition] = useState([16.047079, 108.20623]); // initial map center
   const mapRef = useRef();
-
+  const [distance, setDistance] = useState(0);
+  const [resrep, setResrep] = useState({
+    startPoint: startPoint,
+    endPoint: endPoint,
+    timeStart: '',
+    account: {},
+    driverDetail: {},
+    amount: "",
+    paymentMethod: '',
+    driverType: ''
+  });
   const handleRouteFound = (summary) => {
-    const distance = (summary.totalDistance / 1000).toFixed(2) + " km";
+    setDistance((summary.totalDistance / 1000).toFixed(2));
+    setResrep({ ...resrep, amount: (summary.totalDistance / 1000).toFixed(2)*10000 });
     const time = (summary.totalTime / 60).toFixed(2) + " minutes";
     setRouteInfo(`Distance: ${distance}, time: ${time}`);
+  };
+
+  const handleSubmit = async (e) => {
+    try {
+      const token = localStorage.getItem("token");
+      await TransactionService.addTrans(resrep);
+    } catch (error) {
+      console.error( error);
+    }
   };
 
   const geocodeAddress = (address, callback) => {
@@ -104,11 +124,11 @@ function ListGroupCar() {
         // addOwnerTrip(user, groupCarData)
         // axios.post(`http://localhost:8080/public/addCustomer/${user.id}/${groupCarData.groupId}`);
         console.log("groupCardata >>> ", groupCarData)
-        console.log("userId >>>> ", user.id)
-
+        console.log("userId >>>> ", user.accountId)
+        setResrep({ ...resrep, account: user });
         setUserObject(user);
         setGroupCarDetail(groupCarData);
-
+        console.log(resrep);
       }
     } catch (error) {
       console.error('Failed to parse combinedDataString:', error);
@@ -158,6 +178,8 @@ function ListGroupCar() {
       setStartPoint(start);
       geocodeAddress(groupCar.endPoint, (end) => {
         setEndPoint(end);
+      setResrep({ ...resrep, startPoint: start, endPoint: end });
+
       });
     });
   };
@@ -180,9 +202,10 @@ function ListGroupCar() {
 
   const handleJoin = async (groupId) => {
     try {
-      await axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupId}`);
-      // Alert join successful
-      alert('Join successfully');
+      console.log(resrep);
+      // await axios.post(`http://localhost:8080/public/addCustomer/${userObject.accountId}/${groupId}`);
+      // // Alert join successful
+      // alert('Join successfully');
       // Update quantity of the joined groupCar
       const updatedGroupCars = groupCars.map((car) => {
         if (car.groupId === groupId) {
@@ -210,7 +233,7 @@ function ListGroupCar() {
           <label htmlFor="table-search" className="sr-only">Search</label>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">GroupId</th>
               <th scope="col" className="px-6 py-3">Start Point</th>

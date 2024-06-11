@@ -60,7 +60,7 @@ function App() {
                     path="/searchGroupCar/:groupCarAndUserString"
                     element={<SearchGroupCar />}
                   />
-                  <Route path="/mytrip/:id" element={<Mytrip />} />
+                  <Route path="/mytrip/:accountId" element={<Mytrip />} />
                   <Route path="/listGroupCar/:groupCarAndUserString" element={<ListGroupCar/>} />
                 </>
               )}

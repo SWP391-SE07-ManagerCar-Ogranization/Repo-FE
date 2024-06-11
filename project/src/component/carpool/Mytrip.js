@@ -6,7 +6,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 
 function ListGroupCar() {
   const [groupCars, setGroupCars] = useState([]);
-  const { id: userId } = useParams();
+  const { accountId: userId } = useParams();
   
   const [groupIdDetail, setGroupIdDetail] = useState(null);
   const [groupCarDetail, setGroupCarDetail] = useState({});
