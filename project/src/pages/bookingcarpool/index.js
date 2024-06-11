@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import images from "../../assets/icons/logo.svg";
 import { BsPersonCircle } from "react-icons/bs";
-
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.js";
+import L from "leaflet";
 import tradition2 from "../../assets/images/bg_tradition2.png";
 import Input_Tradition from "../../component/layouts/components/Input_Tradition";
 import DriverType from "../../component/layouts/components/driverType";
@@ -9,9 +12,83 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Select from "react-dropdown-select";
 import { FaCar } from "react-icons/fa"; 
+import LeafletGeocoder from "../../component/carpool/map/LeafletGeocoder";
+import LeafletRoutingMachine from "../../component/carpool/map/LeafletRoutingMachine";
 
+// const UpdateMapCenter = ({ position }) => {
+//   const map = useMap();
+//   map.setView(position);
+//   return null;
+// };
 function Bookingcarpool(props) {
-  let groupCarData={};
+  // Map start 
+  // let groupCarData={};
+  // let DefaultIcon = L.icon({
+  //   iconUrl: "/marker-icon.png",
+  //   iconSize: [25, 41],
+  //   iconAnchor: [10, 41],
+  //   popupAnchor: [2, -40],
+  // });
+  // L.Marker.prototype.options.icon = DefaultIcon;
+  // const [startPoint, setStartPoint] = useState(null);
+  // const [endPoint, setEndPoint] = useState(null);
+  // const [routeInfo, setRouteInfo] = useState("");
+  // const [position, setPosition] = useState([16.047079, 108.20623]); // initial map center
+  // const mapRef = useRef();
+
+  // const handleRouteFound = (summary) => {
+  //   const distance = (summary.totalDistance / 1000).toFixed(2) + " km";
+  //   const time = (summary.totalTime / 60).toFixed(2) + " minutes";
+  //   setRouteInfo(`Distance: ${distance}, Time: ${time}`);
+  // };
+
+  // const geocodeAddress = (address, callback) => {
+  //   const geocoder = L.Control.Geocoder.nominatim();
+  //   geocoder.geocode(address, (results) => {
+  //     if (results.length > 0) {
+  //       const { center } = results[0];
+  //       setPosition([center.lat, center.lng]); // Update map center
+  //       callback(center);
+  //     } else {
+  //       alert("Address not found");
+  //     }
+  //   });
+  // };
+
+  // const handleSearchClick = () => {
+  //   if (startPoint && endPoint) {
+  //     // Get the map instance from the ref
+  //     const map = mapRef.current;
+
+  //     // Initialize the routing machine to find the route and update the info
+  //     const routingControl = L.Routing.control({
+  //       waypoints: [L.latLng(startPoint), L.latLng(endPoint)],
+  //       lineOptions: {
+  //         styles: [
+  //           {
+  //             color: "red",
+  //             weight: 4,
+  //             opacity: 0.7,
+  //           },
+  //         ],
+  //       },
+  //       routeWhileDragging: false,
+  //       geocoder: L.Control.Geocoder.nominatim(),
+  //       addWaypoints: false,
+  //       draggableWaypoints: false,
+  //       fitSelectedRoutes: true,
+  //       showAlternatives: true,
+  //     })
+  //       .on("routesfound", function (e) {
+  //         const route = e.routes[0];
+  //         handleRouteFound(route.summary);
+  //       })
+  //       .addTo(map);
+  //   } else {
+  //     alert("Please enter both start and end addresses.");
+  //   }
+  // };
+  // map end
   const options = [
     { label: "4 seater Car", value: 4, icon: <FaCar /> },
     { label: "6 Seater Car", value: 6, icon: <FaCar /> },
@@ -26,7 +103,7 @@ function Bookingcarpool(props) {
       {item.label}
     </div>
   );
-
+  let groupCarData = {}
   let navigate = useNavigate();
   const [user, setUser] = useState({ id: 9 });
   
@@ -49,12 +126,12 @@ function Bookingcarpool(props) {
   const onSubmit = async (e) => {
     e.preventDefault();
     
-    // const { startPoint, endPoint, timeStart, capacity } = groupCar;
+    const { startPoint, endPoint, timeStart, capacity } = groupCar;
     
-    // if (!startPoint || !endPoint || capacity === 0) {
-    //   alert("Please fill in all required fields.");
-    //   return;
-    // }
+    if (!startPoint || !endPoint || capacity === 0) {
+      alert("Please fill in all required fields.");
+      return;
+    }
     
     let request = await axios.post("http://localhost:8080/public/addGroupCar", groupCar);
     groupCarData = request.data
@@ -64,7 +141,7 @@ function Bookingcarpool(props) {
     // const userString = encodeURIComponent(JSON.stringify(user));
     navigate(`/listGroupCar/${encodeURIComponent(JSON.stringify({ groupCarData, user }))}`);
   };
-  console.log(groupCar)
+  
   return (
     <div
       className="flex items-center h-[600px] flex-col"
@@ -153,6 +230,7 @@ function Bookingcarpool(props) {
                 My trip
               </Link>
             </div>
+            
           </div>
         </div>
       </div>
@@ -168,6 +246,67 @@ function Bookingcarpool(props) {
           Premium car rental at affordable rates. Worldwide.
         </h1>
       </div>
+
+      {/* Map start*/}
+
+      {/* <div className="Map w-[100%]">
+      <input
+        id="start-input"
+        placeholder="đi"
+        onBlur={(e) => {
+          const address = e.target.value;
+          geocodeAddress(address, setStartPoint);
+        }}
+      />
+      <input
+        id="end-input"
+        placeholder="về"
+        onBlur={(e) => {
+          const address = e.target.value;
+          geocodeAddress(address, setEndPoint);
+        }}
+      />
+      <button onClick={handleSearchClick}>Tìm kiếm</button>
+
+      <MapContainer
+        center={position}
+        zoom={13}
+        scrollWheelZoom={false}
+        ref={mapRef}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {startPoint && (
+          <>
+            <Marker position={startPoint}>
+              <Popup>Start Point</Popup>
+            </Marker>
+            <UpdateMapCenter position={startPoint} />
+          </>
+        )}
+        {endPoint && (
+          <>
+            <Marker position={endPoint}>
+              <Popup>End Point</Popup>
+            </Marker>
+            <UpdateMapCenter position={endPoint} />
+          </>
+        )}
+        <LeafletGeocoder
+          setStartPoint={setStartPoint}
+          setEndPoint={setEndPoint}
+        />
+        <LeafletRoutingMachine
+          startPoint={startPoint}
+          endPoint={endPoint}
+          onRouteFound={handleRouteFound}
+        />
+      </MapContainer>
+    </div> */}
+
+      {/* Map end */}
     </div>
   );
 }
