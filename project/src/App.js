@@ -16,23 +16,15 @@ import ListGroupCar from "./component/carpool/listGroupCar/ListGroupCar";
 import HomeCarPool from "./component/carpool/HomeCarpool/Home";
 import Mytrip from "./component/carpool/Mytrip";
 import Test from "./component/Test";
-import * as UserService from "./service/UserService";
-import { useEffect, useState } from "react";
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState();
-  useEffect(() => {
-    checkAuth();
-  }, [isAuthenticated]);
+import Page403 from "./layouts/403";
+import WorkingPage from "./component/driver/WorkingPage";
+import { useState } from "react";
 
-  const checkAuth = async () => {
-    try {
-      await UserService.getRole().then((value) => {
-        setIsAuthenticated(value);
-      });
-    } catch (error) {
-      console.error("Error checking authentication:", error);
-    }
-  };
+function App() {
+  const [isAuthenticated,setIsAuthenticated] = useState(localStorage.getItem("role"));
+  window.addEventListener("storage",()=> {
+    setIsAuthenticated(localStorage.getItem('role'));
+  })
   return (
     <BrowserRouter>
       <GoogleOAuthProvider clientId="966533859873-a39qra6o0qhqjcp6jt2sbg9f2csqlssg.apps.googleusercontent.com">
@@ -46,15 +38,14 @@ function App() {
             </>
           ) : (
             <>
-              <Route path="/profile" element={<ProfilePage />}></Route>
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/update-password" element={<UpdatePass />} />
               <Route path="/forgot-password" element={<ForgotPass />} />
               <Route path="/logout" element={<Logout />}></Route>
               <Route path="/update-user/:userId" element={<UpdateUser />} />
               <Route path="/payment" element={<Payment />} />
-
               {/* thinh */}
-              {(isAuthenticated==="CUSTOMER") && (
+              {isAuthenticated === "CUSTOMER" && (
                 <>
                   <Route
                     exact
@@ -72,12 +63,18 @@ function App() {
                   />
                 </>
               )}
-
-              <Route path="*" element={<Navigate to="/" />} />
+              {isAuthenticated === "DRIVER"} && (
+              <>
+                <Route path="/working-page" element={<WorkingPage />} />
+                <Route path="/track-revenue" element={<HomeCarPool />} />
+              </>
+              )
+              <Route path="*" element={<Navigate to="/403" />} />
             </>
           )}
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/test" element={<Test />} />
+          <Route path="/403" element={<Page403 />} />
         </Routes>
       </GoogleOAuthProvider>
       <ToastContainer />

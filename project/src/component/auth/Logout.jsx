@@ -7,6 +7,8 @@ const Logout = () => {
     // Remove the token from localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    const evt = new CustomEvent("storage", {});
+    window.dispatchEvent(evt);
     setTimeout(() => {
       navigate('/login');
     }, 1000);
