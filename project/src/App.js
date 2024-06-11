@@ -36,7 +36,7 @@ function App() {
             <Route exact path="/home-car-pool" element={<HomeCarPool />} />
             <Route path="/searchGroupCar/:groupCarAndUserString" element={<SearchGroupCar />} />
             <Route path="/mytrip/:id" element={<Mytrip/>} />
-            <Route path="/listGroupCar/:userString" element={<ListGroupCar/>} />
+            <Route path="/listGroupCar/:groupCarAndUserString" element={<ListGroupCar/>} />
         </Routes>
       </GoogleOAuthProvider>
       <ToastContainer />

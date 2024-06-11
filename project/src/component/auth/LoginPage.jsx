@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { signupValidation } from "../../config/SignupValidation";
+import { SignupValidation } from "../../config/signupValidation";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "../../service/UserService";
@@ -18,7 +18,7 @@ function LoginPage() {
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initValues,
-    validationSchema: signupValidation,
+    validationSchema: SignupValidation,
     onSubmit: async (values) => {
       const userData = await UserService.login(values.email, values.password);
       console.log(userData);

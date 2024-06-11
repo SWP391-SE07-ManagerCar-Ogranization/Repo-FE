@@ -6,70 +6,105 @@ import { Link } from 'react-router-dom';
 import { Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 function ListGroupCar() {
-  let navigate = useNavigate();
   const [userObject, setUserObject] = useState({});
   const [groupCars, setGroupCars] = useState([]);
-  const [groupIdDetail, setGroupIdDetail] = useState(null);
   const [groupCarDetail, setGroupCarDetail] = useState({});
-  const [customersDetail, setCustomersDetail] = useState([]);
-  const [check, setCheck] = useState(false)
-  const { userString } = useParams();
+  const [check, setCheck] = useState(false);
+  const { groupCarAndUserString } = useParams();
+
   useEffect(() => {
+    let groupCarAndUserObject;
     try {
-      const decodedUserString = decodeURIComponent(userString);
-      setUserObject(JSON.parse(decodedUserString));
+      if (groupCarAndUserString) {
+        groupCarAndUserObject = JSON.parse(decodeURIComponent(groupCarAndUserString));
+        const { groupCarData, user } = groupCarAndUserObject;
+        // addOwnerTrip(user, groupCarData)
+        // axios.post(`http://localhost:8080/public/addCustomer/${user.id}/${groupCarData.groupId}`);
+        console.log("groupCardata >>> ", groupCarData)
+        console.log("userId >>>> ", user.id)
+
+        setUserObject(user);
+        setGroupCarDetail(groupCarData);
+
+      }
     } catch (error) {
-      console.error("Failed to parse userString:", error);
-      // Handle error parsing userString
+      console.error('Failed to parse combinedDataString:', error);
     }
-  }, [userString]);
-  console.log("userObject >>>>", userObject)
+  }, [groupCarAndUserString]);
+
+ 
+
+  // useEffect(()=>{
+  //   try{
+  //     axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupCarDetail.groupId}`);
+  //     console.log("success add owner")
+  //   }catch(error){
+  //     console.log("fail add owner >>> ", error)
+  //   }
+  // }, [])
+
   useEffect(() => {
     loadGroupCar();
   }, []);
 
   useEffect(() => {
-    if (groupIdDetail !== null) {
-      loadGroupCarByGroupId(groupIdDetail);
+    if (groupCarDetail?.groupId) {
+      loadGroupCarByGroupId(groupCarDetail.groupId);
     }
-  }, [groupIdDetail]);
+  }, [groupCarDetail.groupId]);
 
-  useEffect(() => {
-    
-    if (groupCarDetail.customers) {
-      setCustomersDetail(groupCarDetail.customers);
-    }
-    
-  }, [groupCarDetail.customers]);
-
-  
-  
-  const handleMembers = (id) => {
-    setCheck(!check)
-    setGroupIdDetail(id);
-  };
-  const handleJoin = async (groupId) => {
-    try{
-      await axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupId}`)
-    }catch(error){
-      alert("Join fail")
-    }
-  }
   const loadGroupCar = async () => {
-    const result = await axios.get(`http://localhost:8080/public/groupCars`);
-    setGroupCars(result.data);
+    try {
+      const result = await axios.get(`http://localhost:8080/public/groupCars`);
+      setGroupCars(result.data);
+    } catch (error) {
+      console.error('Failed to fetch group cars:', error);
+    }
   };
 
   const loadGroupCarByGroupId = async (groupId) => {
-    const result = await axios.get(`http://localhost:8080/public/groupCarById/${groupId}`);
-    setGroupCarDetail(result.data);
+    try {
+      const result = await axios.get(`http://localhost:8080/public/groupCarById/${groupId}`);
+      setGroupCarDetail(result.data);
+    } catch (error) {
+      console.error(`Failed to fetch group car with groupId ${groupId}:`, error);
+    }
   };
 
   const formatDate = (dateString) => {
     const newDate = new Date(dateString);
     return newDate.toLocaleString();
   };
-  console.log(groupCarDetail.customers)
+
+  const handleMembers = (id) => {
+    setCheck(!check);
+    setGroupCarDetail({ ...groupCarDetail, groupId: id }); // Ensure groupCarDetail is updated
+  };
+
+  const handleJoin = async (groupId) => {
+    try {
+      await axios.post(`http://localhost:8080/public/addCustomer/${userObject.id}/${groupId}`);
+      // Alert join successful
+      alert('Join successfully');
+      // Update quantity of the joined groupCar
+      const updatedGroupCars = groupCars.map((car) => {
+        if (car.groupId === groupId) {
+          return {
+            ...car,
+            quantity: (car.quantity || 0) + 1, // Increase quantity by 1
+          };
+        }
+        return car;
+      });
+      // Set updated groupCars state
+      setGroupCars(updatedGroupCars);
+    } catch (error) {
+      // Alert join fail
+      alert('Join fail');
+    }
+  };
+  
+
   return (
     <div className='flex'>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full sm:w-[90%] md:w-[80%] lg:w-[70%] mx-auto">
@@ -121,7 +156,7 @@ function ListGroupCar() {
                     <td className="px-6 py-4">
                     <button
                         className="flex flex-row w-[180px] font-Roboto font-bold rounded-md justify-center items-center h-[52px] bg-red-500 text-white-500"
-                        onClick={handleJoin(groupCar.groupId)}
+                        onClick={()=>handleJoin(groupCar.groupId)}
                       >
                         Join
                       </button>
@@ -133,7 +168,7 @@ function ListGroupCar() {
         </table>
       </div>
 
-      {/* List Search */}
+      {/* List Search
       <div className="w-[30%] max-w-screen-xl mx-auto px-6">
         <div className="flex justify-center p-4 px-3 py-10">
           <div className="w-full max-w-md">
@@ -156,7 +191,7 @@ function ListGroupCar() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {check && <div className="fixed inset-0 flex items-center justify-center z-50 text-center ">
         <Card
           title="Members"
