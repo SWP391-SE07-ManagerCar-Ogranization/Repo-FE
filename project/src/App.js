@@ -19,12 +19,16 @@ import Test from "./component/Test";
 import Page403 from "./layouts/403";
 import WorkingPage from "./component/driver/WorkingPage";
 import { useState } from "react";
+import  Dashboard  from "./layouts/dashboard";
+import FeedbackDriver from "./pages/Customer/feedbackDriver";
 
 function App() {
-  const [isAuthenticated,setIsAuthenticated] = useState(localStorage.getItem("role"));
-  window.addEventListener("storage",()=> {
-    setIsAuthenticated(localStorage.getItem('role'));
-  })
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("role")
+  );
+  window.addEventListener("storage", () => {
+    setIsAuthenticated(localStorage.getItem("role"));
+  });
   return (
     <BrowserRouter>
       <GoogleOAuthProvider clientId="966533859873-a39qra6o0qhqjcp6jt2sbg9f2csqlssg.apps.googleusercontent.com">
@@ -63,12 +67,29 @@ function App() {
                   />
                 </>
               )}
-              {isAuthenticated === "DRIVER"} && (
-              <>
-                <Route path="/working-page" element={<WorkingPage />} />
-                <Route path="/track-revenue" element={<HomeCarPool />} />
-              </>
-              )
+              {isAuthenticated === "DRIVER" && (
+                <>
+                  <Route path="/working-page" element={<WorkingPage />} />
+                  <Route path="/track-revenue" element={<HomeCarPool />} />
+                </>
+              )}
+              {isAuthenticated === "ADMIN" && (
+                <>
+                  <Route path="/dashboard/*" element={<Dashboard />} />
+                  <Route
+                    path="/dashboard/"
+                    element={<Navigate to="/dashboard/home" replace />}
+                  />
+                  <Route
+                    path="*"
+                    element={<Navigate to="/dashboard/home" replace />}
+                  />
+                  <Route
+                    path="/feedback-driver/"
+                    element={<FeedbackDriver />}
+                  />
+                </>
+              )}
               <Route path="*" element={<Navigate to="/403" />} />
             </>
           )}

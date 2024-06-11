@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@material-tailwind/react";
+import { MaterialTailwindControllerProvider } from "./context";
 // import GlobalStyles from "./component/GlobalStyles";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-    <App />
+      <MaterialTailwindControllerProvider>
+      <App />
+      </MaterialTailwindControllerProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

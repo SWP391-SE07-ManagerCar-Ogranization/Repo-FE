@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 const Logout = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    // Remove the token from localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     const evt = new CustomEvent("storage", {});
@@ -12,7 +11,7 @@ const Logout = () => {
     setTimeout(() => {
       navigate('/login');
     }, 1000);
-  }, []);
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

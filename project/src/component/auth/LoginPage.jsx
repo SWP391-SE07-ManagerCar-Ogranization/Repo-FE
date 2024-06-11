@@ -41,6 +41,8 @@ function LoginPage() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role.roleName);
+        const evt = new CustomEvent("storage", {});
+        window.dispatchEvent(evt);
         toast.success("Login Sucessfully !");
 
         navigate("/");
