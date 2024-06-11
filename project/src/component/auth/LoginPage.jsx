@@ -28,7 +28,12 @@ function LoginPage() {
         toast.success("Login Sucessfully !");
         const evt = new CustomEvent("storage", {});
         window.dispatchEvent(evt);
-        navigate("/");
+        if('ADMIN' === (userData.role.roleName)) {
+          navigate('/dashboard');
+        }
+        else {
+          navigate("/");
+        }
       } else {
         setError("Invalid email or password");
       }
@@ -44,7 +49,6 @@ function LoginPage() {
         const evt = new CustomEvent("storage", {});
         window.dispatchEvent(evt);
         toast.success("Login Sucessfully !");
-
         navigate("/");
       } else {
         setError(userData.message);

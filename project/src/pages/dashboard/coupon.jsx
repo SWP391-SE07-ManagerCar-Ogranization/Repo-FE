@@ -8,7 +8,7 @@ import {
     Alert,
   } from "@material-tailwind/react";
   import React, { useEffect, useState } from "react";
-import { addCoupon, couponView, updateCoupon } from "../../service/CouponService";
+import { addCoupon, couponView, updateCoupon,deleteCoupon } from "../../service/CouponService";
   
   export function Coupons() {
     const [coupons, setCoupons] = useState([]);
@@ -31,7 +31,7 @@ import { addCoupon, couponView, updateCoupon } from "../../service/CouponService
       }
     };
   
-    const deleteCoupon = async (couponId) => {
+    const removeCoupon = async (couponId) => {
       try {
         await deleteCoupon(couponId);
         setChange(!change);
@@ -166,7 +166,7 @@ import { addCoupon, couponView, updateCoupon } from "../../service/CouponService
                           <Typography
                             as="a"
                             className="text-xs font-semibold text-red-600"
-                            onClick={() => deleteCoupon(couponId)}
+                            onClick={() => removeCoupon(couponId)}
                           >
                             Delete
                           </Typography>
