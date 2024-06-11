@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./component/GlobalStyles";
+import { ThemeProvider } from "./component/ConText/CartContext"; // Đảm bảo import đúng từ file CartContext
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <GlobalStyles>
-      <App />
-    </GlobalStyles>
+    <ThemeProvider>
+      <GlobalStyles>
+        <App />
+      </GlobalStyles>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
