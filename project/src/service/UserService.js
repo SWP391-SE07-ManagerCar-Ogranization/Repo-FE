@@ -102,7 +102,7 @@ export const isAdmin = async() => {
     return role === 'ADMIN'
 }
 
-export const isUser = async() => {
-    const role = localStorage.getItem('role')
-    return role === 'USER'
+export const getRole = async() => {
+    const role = localStorage.getItem('role');
+    return role;
 }

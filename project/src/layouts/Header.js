@@ -1,156 +1,340 @@
-import React, { useState } from "react";
-import {  Button } from "antd";
-import logo from "../assets/image/logo.svg";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Navbar,
+  MobileNav,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuHandler,
+  Avatar,
+  MenuList,
+  MenuItem,
+} from "@material-tailwind/react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ChevronDownIcon,
+  Cog6ToothIcon,
+  InboxArrowDownIcon,
+  LifebuoyIcon,
+  PowerIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/solid";
+import * as UserService from "../service/UserService";
+import { toast } from "react-toastify";
+import Logo from "../assets/image/logo.svg";
 
-function Header() {
-  const [isMobile, setIsMobile] = useState(true);
-  const renderClass = isMobile ? "fixed" : "hidden";
+function ProfileMenu() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [profileInfo, setProfileInfo] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProfileInfo();
+  }, []);
+
+  const profileMenuItems = [
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+      path: "/profile",
+    },
+    {
+      label: "Edit Profile",
+      icon: Cog6ToothIcon,
+      path: `update-user/${profileInfo?.accountId}`,
+    },
+    {
+      label: "Inbox",
+      icon: InboxArrowDownIcon,
+      path: "/profile",
+    },
+    {
+      label: "Help",
+      icon: LifebuoyIcon,
+      path: "/profile",
+    },
+    {
+      label: "Sign Out",
+      icon: PowerIcon,
+      path: "/logout",
+    },
+  ];
+
+  const fetchProfileInfo = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await UserService.getYourProfile(token);
+      setProfileInfo(response.account);
+    } catch (error) {
+      console.error("Error fetching profile information:", error);
+    }
+  };
+  const handleMenuItemClick = (path) => {
+    setIsMenuOpen(false);
+    if (path === "/logout") {
+      toast.success("Logged out successfully!");
+    }
+    navigate(path);
+  };
 
   return (
-    <header className="bg-white shadow-lg">
-      <nav
-        className="mx-auto flex max-w-full items-center justify-between p-2 lg:px-8"
-        aria-label="Global"
-      >
-        <div className="flex lg:flex-1">
-          <Link to={'/'} className="-m-1.5 p-1.5">
-            <span className="sr-only">FCar</span>
-            <img
-              className="h-16 w-auto"
-              src={logo}
-              alt="logo"
-            />
-          </Link>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            onClick={() => setIsMobile(true)}
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="hidden lg:flex lg:gap-x-12">
-          <Link to={'/home'} className="font-semibold leading-6 relative pr-3 md:pr-0 py-1 after:bg-gradient-to-r from-[#ff9900] to-[#cc33ff]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
-            Home
-          </Link>
-          <Link to={'/booking'} className="font-semibold leading-6 relative pr-3 md:pr-0 py-1 after:bg-gradient-to-r from-[#ff9900] to-[#cc33ff]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
-            Booking
-          </Link>
-          <Link to={'/tour'} className="font-semibold leading-6 relative pr-3 md:pr-0 py-1 after:bg-gradient-to-r from-[#ff9900] to-[#cc33ff]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
-            Tour
-          </Link>
-          <Link to={'/about'} className="font-semibold leading-6 relative pr-3 md:pr-0 py-1 after:bg-gradient-to-r from-[#ff9900] to-[#cc33ff]  after:absolute after:h-1 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300">
-            About
-          </Link>
-        </div>
-        <div className="hidden lg:flex lg:flex-1 justify-end lg:gap-x-12">
-        <Button size="large" className="hover:bg-clip-text border-solid border-2 border-red-300 w-28">
-        <Link to={'/login'} className="text-lg font-semibold leading-6">
-            Log in
-          </Link>
-        </Button>
-        <Button size="large" className="w-28 hover:bg-clip-text hover:text-transparent bg-gradient-to-br from-[#ff9933] to-[#ff6699] border-solid border-2 border-gray-300 text-white">
-        <Link to={'/register'} className="text-lg font-semibold leading-6">
-            Sign Up
-          </Link>
-        </Button>
-        </div>
-      </nav>
-      <div className="lg:hidden" role="dialog" aria-modal="true">
-        <div className=" inset-0 z-10" />
-        <div
-          className={`${renderClass} inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10`}
+    <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+      <MenuHandler>
+        <Button
+          variant="text"
+          color="blue-gray"
+          className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
         >
-          <div className="flex items-center justify-between">
-            <Link to={'/'} className="-m-1.5 p-1.5">
-              <span className="sr-only">FCar</span>
-              <img
-                className="h-10 w-auto"
-                src={logo}
-                alt="logo"
-              />
-            </Link>
-            <button
-              onClick={() => setIsMobile(!isMobile)}
-              type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+          <Avatar
+            variant="circular"
+            size="sm"
+            alt="tania andrew"
+            className="border border-gray-900 p-0.5"
+            src={profileInfo.image}
+          />
+          <ChevronDownIcon
+            strokeWidth={2.5}
+            className={`h-3 w-3 transition-transform ${
+              isMenuOpen ? "rotate-180" : ""
+            }`}
+          />
+        </Button>
+      </MenuHandler>
+      <MenuList className="p-1">
+        {profileMenuItems.map(({ label, icon, path }, key) => {
+          const isLastItem = key === profileMenuItems.length - 1;
+          return (
+            <MenuItem
+              key={label}
+              onClick={() => handleMenuItemClick(path)}
+              className={`flex items-center gap-2 rounded ${
+                isLastItem
+                  ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                  : ""
+              }`}
             >
-              <span className="sr-only">Close menu</span>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
+              {React.createElement(icon, {
+                className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
+                strokeWidth: 2,
+              })}
+              <Typography
+                as="span"
+                variant="small"
+                className="font-normal"
+                color={isLastItem ? "red" : "inherit"}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                <Link to={'/'}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  Home
-                </Link>
-                <Link to={'/'}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  Booking
-                </Link>
-                <Link to={'/'}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  Tour
-                </Link>
-                <Link to={'/'}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  About
-                </Link>
-              </div>
-              <div className="py-6">
-                <Link to={'/login'}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  Log in
-                </Link>
-                <Link to={'/register'}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-100"
-                >
-                  Sign up
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+                {label}
+              </Typography>
+            </MenuItem>
+          );
+        })}
+      </MenuList>
+    </Menu>
   );
 }
 
-export default Header;
+export default function StickyNavbar() {
+  const navigate = useNavigate();
+  const [openNav, setOpenNav] = React.useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false)
+    );
+  }, []);
+  const handleSignUpClick = (e) => {
+    navigate("/registration");
+  };
+  const handleLoginClick = (e) => {
+    navigate("/login");
+  };
+
+  const navList = (localStorage.getItem("role") === 'DRIVER') ? (
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <a href="#" className="flex items-center">
+          Pages
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/working-page" className="flex items-center">
+          Working
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/track-revenue" className="flex items-center">
+          Track Revenue
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <a href="#" className="flex items-center">
+          History Trip
+        </a>
+      </Typography>
+    </ul>
+  ) : (
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <a href="#" className="flex items-center">
+          Pages
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <a href="#" className="flex items-center">
+          Booking
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to="/home-car-pool" className="flex items-center">
+          Carpool
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <a href="#" className="flex items-center">
+          Docs
+        </a>
+      </Typography>
+    </ul>
+  );
+
+  return (
+    <div className="">
+      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+        <div className="flex items-center justify-between text-blue-gray-900">
+          <Link to="/">
+            <img src={Logo} alt="logo-ct" className="w-20 h-fit" />
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="mr-4 hidden lg:block">{navList}</div>
+            <div className="flex items-center gap-x-1">
+              {localStorage.getItem("token") ? (
+                <ProfileMenu />
+              ) : (
+                <div>
+                  <Button
+                    variant="text"
+                    size="sm"
+                    className="hidden lg:inline-block"
+                    onClick={handleLoginClick}
+                  >
+                    <span>Log In</span>
+                  </Button>
+                  <Button
+                    variant="gradient"
+                    size="sm"
+                    className="hidden lg:inline-block"
+                    onClick={handleSignUpClick}
+                  >
+                    <span>Sign up</span>
+                  </Button>
+                </div>
+              )}
+            </div>
+            <IconButton
+              variant="text"
+              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+              ripple={false}
+              onClick={() => setOpenNav(!openNav)}
+            >
+              {openNav ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </IconButton>
+          </div>
+        </div>
+        <MobileNav open={openNav}>
+          {navList}
+          <div className="flex items-center gap-x-1">
+            <Button
+              fullWidth
+              variant="text"
+              size="sm"
+              className=""
+              onClick={handleLoginClick}
+            >
+              <span>Log In</span>
+            </Button>
+            <Button
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className=""
+              onClick={handleSignUpClick}
+            >
+              <span>Sign up</span>
+            </Button>
+          </div>
+        </MobileNav>
+      </Navbar>
+    </div>
+  );
+}

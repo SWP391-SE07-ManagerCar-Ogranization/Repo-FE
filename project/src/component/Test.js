@@ -1,12 +1,12 @@
-import { Button } from '@material-tailwind/react';
 import React from 'react';
 
 const Test = () => {
-    return (
-        <div>123
-            <Button>123</Button>
-        </div>
-    );
+  console.log(localStorage.getItem('role'));
+  return (
+    <div>
+      teset
+    </div>
+  );
 };
 
 export default Test;

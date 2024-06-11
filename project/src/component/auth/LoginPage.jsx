@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { SignupValidation } from "../../config/signupValidation";
+import { SignupValidation } from "../../config/SignupValidation";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "../../service/UserService";
@@ -24,9 +24,16 @@ function LoginPage() {
       console.log(userData);
       if (userData.token) {
         localStorage.setItem("token", userData.token);
-        localStorage.setItem("role", userData.role);
+        localStorage.setItem("role", userData.role.roleName);
         toast.success("Login Sucessfully !");
-        // navigate("/profile");
+        const evt = new CustomEvent("storage", {});
+        window.dispatchEvent(evt);
+        if('ADMIN' === (userData.role.roleName)) {
+          navigate('/dashboard');
+        }
+        else {
+          navigate("/");
+        }
       } else {
         setError("Invalid email or password");
       }
@@ -38,9 +45,11 @@ function LoginPage() {
       const userData = await UserService.loginGoogle(formData);
       if (userData.token) {
         localStorage.setItem("token", userData.token);
-        localStorage.setItem("role", userData.role);
+        localStorage.setItem("role", userData.role.roleName);
+        const evt = new CustomEvent("storage", {});
+        window.dispatchEvent(evt);
         toast.success("Login Sucessfully !");
-        navigate("/profile");
+        navigate("/");
       } else {
         setError(userData.message);
       }
@@ -59,16 +68,16 @@ function LoginPage() {
     const newFormData = {
       name: credentialResponseDecoded.name,
       email: credentialResponseDecoded.email,
-      image: credentialResponseDecoded.picture
+      image: credentialResponseDecoded.picture,
     };
     handleSubmitGoogle(newFormData);
   };
 
   return (
-    <section className="bg-gradient-to-r from-red-50 via-red-200 to-red-400 h-screen" >
+    <section className="bg-gradient-to-r from-red-50 via-red-200 to-red-400 h-screen">
       <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
         <div className="sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6 text-gray-400">
-          <img src={logo} alt="logo" className="mx-auto"/>
+          <img src={logo} alt="logo" className="mx-auto" />
         </div>
         <div className="w-full px-4 pt-5 pb-6 mx-0 mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6">
           <h1 className="mb-4 text-lg font-semibold text-center text-gray-600">
@@ -154,14 +163,14 @@ function LoginPage() {
         </div>
         <p className="sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6 text-gray-400 flex justify-between">
           <Link
-            to={"/"}
+            to={"/registration"}
             className="text-orange-500 hover:underline dark:text-primary-500 font-semibold "
           >
             Create an account
           </Link>
           -
           <Link
-            to={"/"}
+            to={"/forgot-password"}
             className="text-orange-500 hover:underline dark:text-primary-500 font-semibold "
           >
             Forgot password ?

@@ -125,7 +125,6 @@ function Bookingcarpool(props) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
     const { startPoint, endPoint, timeStart, capacity } = groupCar;
     
     if (!startPoint || !endPoint || capacity === 0) {
@@ -151,13 +150,13 @@ function Bookingcarpool(props) {
         backgroundPosition: "center",
       }}
     >
-      <div className="w-full flex justify-center bg-orange-300">
+      {/* <div className="w-full flex justify-center bg-orange-300">
         <p className="font-Roboto font-bold text-xl">
           111 years of SIXT. 111 years of tradition.
         </p>
-      </div>
+      </div> */}
       <div>
-        <div className="">
+        {/* <div className="">
           <div className="flex justify-between gap-[895px] items-center">
             <div className="">
               <img src={images} width={"102px"} alt="logo" className=""></img>

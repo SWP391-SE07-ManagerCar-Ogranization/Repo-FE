@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import * as UserService from "../../service/UserService";
 import { Link } from "react-router-dom";
 import { Button, Card, Col, Empty, Image, Modal } from "antd";
-
 function ProfilePage() {
   const [profileInfo, setProfileInfo] = useState({});
   const [feedback, setFeedback] = useState();
