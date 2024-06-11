@@ -174,7 +174,7 @@ export const FeedbackTest = () => {
                                         <tr className={showListByDriverId === feedback?.driverDetail.id ? `glow` : ``}>
                                             <td className={className}>
                                                 <div className="flex items-center gap-4">
-                                                    <Avatar src={feedback.driverDetail.account.image?feedback.driverDetail.account.image:avatarDefault} alt={feedback?.driverDetail?.account?.name} size="sm" variant="rounded" />
+                                                    <Avatar src={feedback?.driverDetail?.account?.image?feedback?.driverDetail?.account?.image:avatarDefault} alt={feedback?.driverDetail?.account?.name} size="sm" variant="rounded" />
                                                     <div>
                                                         <Typography
                                                             variant="small"
@@ -283,7 +283,7 @@ export const FeedbackTest = () => {
                                                                             <td className={className}>
                                                                                 <div className="flex items-center gap-4">
                                                                                     <Avatar
-                                                                                        src={el.customer.account.image?el.customer.account.image:avatarDefault}
+                                                                                        src={el?.customer?.account?.image?el?.customer?.account?.image:avatarDefault}
                                                                                         alt={el?.customer?.account?.name}
                                                                                         size="sm"
                                                                                         variant="rounded"
