@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { fetchRevenueInLast12Months, fetchTripInLast12Months } from "../../service/AdminDashboard/TransactionChartData";
 
-
 const generateLast12MonthsLabels = () => {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const today = new Date();
@@ -21,40 +20,35 @@ const RevenueTripChart = () => {
     const [trip, setTrip] = useState([]);
     const [categories, setCategories] = useState(generateLast12MonthsLabels());
 
+    const getRevenueData = async () => {
+        try {
+            const data = await fetchRevenueInLast12Months();
+            setRevenue(data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const getTripData = async () => {
+        try {
+            const data = await fetchTripInLast12Months();
+            setTrip(data);
+        } catch (e) {
+            console.error(e);
+        }
+    };
     useEffect(() => {
-        const getRevenueData = async () => {
-            try {
-                const data = await fetchRevenueInLast12Months();
-                setRevenue(data);
-            } catch (e) {
-                console.error(e);
-            }
-        };
         getRevenueData();
-    }, []);
-
-    useEffect(() => {
-        const getTripData = async () => {
-            try {
-                const data = await fetchTripInLast12Months();
-                setTrip(data);
-            } catch (e) {
-                console.error(e);
-            }
-        };
         getTripData();
-    }, []);
-
-    useEffect(() => {
         const interval = setInterval(() => {
             setCategories(generateLast12MonthsLabels());
-        }, 1000 * 60 * 60); 
+        }, 1000 * 60 * 60);
         return () => clearInterval(interval);
     }, []);
 
     const chartConfig = {
         chart: {
-            type: 'line', 
+            type: 'line',
             height: 400,
         },
         series: [
@@ -65,7 +59,7 @@ const RevenueTripChart = () => {
             },
             {
                 name: 'Trip',
-                type: 'bar', 
+                type: 'bar',
                 data: trip.map((tr, index) => ({ x: categories[index], y: tr }))
             }
         ],
@@ -109,11 +103,11 @@ const RevenueTripChart = () => {
     return (
         <div className="p-4 bg-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Revenue and Trips in Last 12 Months</h2>
-            <ReactApexChart 
-                options={chartConfig} 
-                series={chartConfig.series} 
-                type="line" 
-                height={chartConfig.chart.height} 
+            <ReactApexChart
+                options={chartConfig}
+                series={chartConfig.series}
+                type="line"
+                height={chartConfig.chart.height}
             />
         </div>
     );
