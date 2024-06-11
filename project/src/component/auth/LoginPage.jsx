@@ -26,7 +26,7 @@ function LoginPage() {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
         toast.success("Login Sucessfully !");
-        navigate("/profile");
+        navigate("/");
       } else {
         setError("Invalid email or password");
       }
@@ -38,9 +38,9 @@ function LoginPage() {
       const userData = await UserService.loginGoogle(formData);
       if (userData.token) {
         localStorage.setItem("token", userData.token);
-        localStorage.setItem("role", userData.role);
+        localStorage.setItem("role", userData.role.roleName);
         toast.success("Login Sucessfully !");
-        navigate("/profile");
+        navigate("/");
       } else {
         setError(userData.message);
       }
@@ -146,7 +146,7 @@ function LoginPage() {
                 onError={() => {
                   console.log("Login Failed");
                 }}
-                // useOneTap
+                useOneTap
                 shape="pill"
               />
             </div>
@@ -154,14 +154,14 @@ function LoginPage() {
         </div>
         <p className="sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6 text-gray-400 flex justify-between">
           <Link
-            to={"/"}
+            to={"/registration"}
             className="text-orange-500 hover:underline dark:text-primary-500 font-semibold "
           >
             Create an account
           </Link>
           -
           <Link
-            to={"/"}
+            to={"/forgot-password"}
             className="text-orange-500 hover:underline dark:text-primary-500 font-semibold "
           >
             Forgot password ?

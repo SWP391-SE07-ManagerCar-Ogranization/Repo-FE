@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import images from "../../assets/icons/logo.svg";
 import { BsPersonCircle } from "react-icons/bs";
-import CarType from "../../component/layouts/components/carType";
 import tradition2 from "../../assets/images/bg_tradition2.png";
 import Input_Tradition from "../../component/layouts/components/Input_Tradition";
 import Input_Tradition_Date from "../../component/layouts/components/Input_Tradition_Date";
@@ -9,7 +8,6 @@ import DriverType from "../../component/layouts/components/driverType";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Select from "react-dropdown-select";
-import { RiMotorbikeFill } from "react-icons/ri";
 import { FaCar } from "react-icons/fa"; 
 import { toast } from "react-toastify";
 
@@ -45,7 +43,6 @@ function Bookingcarpool(props) {
   let navigate = useNavigate();
   const [values, setValues] = useState([])
   const [user, setUser] = useState({ id: 9});
-  console.log("userId >>>> ", user.id)
   const [groupCar, setGroupCar] = useState({
     startPoint: "",
     endPoint: "",
@@ -82,14 +79,14 @@ function Bookingcarpool(props) {
         backgroundPosition: "center",
       }}
     >
-      <div className="w-full flex justify-center bg-orange-300">
+      {/* <div className="w-full flex justify-center bg-orange-300">
         <p className="font-Roboto font-bold text-xl">
           {" "}
           111 years of SIXT. 111 years of tradition.
         </p>
-      </div>
+      </div> */}
       <div>
-        <div className="">
+        {/* <div className="">
           <div className="flex justify-between gap-[895px] items-center">
             <div className="">
               <img src={images} width={"102px"} alt="logo" className=""></img>
@@ -99,7 +96,7 @@ function Bookingcarpool(props) {
               <h2 className="font-Roboto font-bold">{user.id}</h2>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className=" flex flex-col items-center rounded-[20px] w-[1550px] h-[200px] bg-white-500  justify-center">
           <div className="flex flex-row justify-start w-full gap-5 mb-8 ml-[22px]">
             <DriverType text={"Cars"}></DriverType>

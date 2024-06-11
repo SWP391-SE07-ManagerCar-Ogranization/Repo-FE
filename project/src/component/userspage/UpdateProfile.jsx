@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import * as UserService from "../../service/UserService";
 import { toast } from "react-toastify";
+import { Input } from "@material-tailwind/react";
 
 export default function UpdateProfile() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function UpdateProfile() {
       const res = await UserService.updateUser(userId, userData, token);
       console.log(res);
       toast.success("Update Sucessfully !");
-      navigate("/profile")
+      navigate("/profile");
     } catch (error) {
       toast.error("Fail to upload");
       console.error("Error updating user profile:", error);
@@ -64,30 +65,29 @@ export default function UpdateProfile() {
   const handleOnSubmitImg = async (event) => {
     try {
       const form = event.currentTarget;
-    const fileInput = Array.from(form.elements).find(
-      ({ name }) => name === "file"
-    );
-    const formData = new FormData();
-    for (const file of fileInput.files) {
-      formData.append("file", file);
-    }
-    formData.append("upload_preset", "ml_default");
-    const data = await fetch(
-      "https://api.cloudinary.com/v1_1/dxge4xlbh/image/upload",
-      {
-        method: "POST",
-        body: formData,
+      const fileInput = Array.from(form.elements).find(
+        ({ name }) => name === "file"
+      );
+      const formData = new FormData();
+      for (const file of fileInput.files) {
+        formData.append("file", file);
       }
-    ).then((r) => r.json());
-    console.log(data);
-    setUserData((prev) => ({
-      ...prev,
-      image: data.url,
-    }));
+      formData.append("upload_preset", "ml_default");
+      const data = await fetch(
+        "https://api.cloudinary.com/v1_1/dxge4xlbh/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      ).then((r) => r.json());
+      console.log(data);
+      setUserData((prev) => ({
+        ...prev,
+        image: data.url,
+      }));
     } catch (error) {
       console.log(error);
     }
-    
   };
 
   return (
@@ -99,32 +99,50 @@ export default function UpdateProfile() {
           </h1>
           <form className="mb-8 space-y-4" onSubmit={(e) => handleSubmit(e)}>
             <div>
-              <label>Name:</label>
-              <input
+              <Input
                 type="text"
                 name="name"
                 value={userData.name}
                 onChange={handleInputChange}
+                label="Full name"
               />
             </div>
             <div>
-              <label>Email:</label>
-              <input
+              <Input
                 disabled
                 type="email"
                 name="email"
                 value={userData.email}
                 onChange={handleInputChange}
+                label="Disabled"
               />
             </div>
             <div>
-              <label>Avatar:</label>
+              <label
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                for="file_input"
+              >
+                Upload file
+              </label>
               <img
                 src={userData.image}
                 style={{ width: "200px", height: "200px" }}
                 alt="img"
               />
-              <input type="file" name="file" onChange={handleOnChangeImg} />
+              <br></br>
+              <input
+                onChange={handleOnChangeImg}
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                aria-describedby="file_input_help"
+                id="file_input"
+                type="file"
+              />
+              <p
+                class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                id="file_input_help"
+              >
+                SVG, PNG, JPG or GIF (MAX. 800x400px).
+              </p>
             </div>
             <br></br>
             <button className="bg-orange-400 hover:focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 w-full text-white">

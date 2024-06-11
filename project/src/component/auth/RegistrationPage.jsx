@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import UserService from "../service/UserService";
+import * as UserService from "../../service/UserService";
 import { useNavigate } from "react-router-dom";
-import firebase from "../cloud/firebase.config.js";
 import OtpInput from "react-otp-input";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import firebase from "../../config/firebase.config.js";
+import { Button, Input } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 function RegistrationPage() {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ function RegistrationPage() {
     name: "",
     email: "",
     password: "",
+    phone: "",
   });
 
   const handleInputChange = (e) => {
@@ -39,11 +42,12 @@ function RegistrationPage() {
       .signInWithPhoneNumber(phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
-        alert("Sent OTP successfully");
+        setFormData({ ...formData, phone: phoneNumber });
+        toast.success("Sent OTP successfully");
       })
       .catch((error) => {
         console.log(error);
-        alert("Failed to send OTP");
+        toast.error("Failed to send OTP");
       });
   };
 
@@ -53,25 +57,26 @@ function RegistrationPage() {
       handleSubmit();
     } catch (error) {
       console.log(error);
-      alert("Failed to verify");
+      toast.error("Failed to verify");
     }
   };
 
   const handleSubmit = async (e) => {
     try {
-        const token = localStorage.getItem("token");
-        await UserService.register(formData, token);
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-        });
-        alert("User registered successfully");
-        navigate("/");
-      
+      const token = localStorage.getItem("token");
+      console.log(formData);
+      await UserService.register(formData, token);
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+      });
+      toast.success("User registered successfully");
+      navigate("/");
     } catch (error) {
       console.error("Error registering user:", error);
-      alert("An error occurred while registering user");
+      toast.error("An error occurred while registering user");
     }
   };
 
@@ -80,59 +85,71 @@ function RegistrationPage() {
   }, []);
 
   return (
-    <div className="auth-container">
-      <h2>Registration</h2>
-      {error && <p className="error-message">{error}</p>}
-      <PhoneInput
-        country={"vn"}
-        value={phoneNumber}
-        onChange={(phone) => setPhoneNumber("+" + phone)}
-      />
-      <div id="sign-in-button"></div>
-      <button onClick={sendOtp}>
-        <span>Send code</span>
-      </button>
-      <div className="form-group">
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
+    <section className="bg-gradient-to-r from-red-50 via-red-200 to-red-400 h-screen">
+      <div className="px-0 py-10 mx-auto max-w-7xl sm:px-4">
+        <div className="w-full px-4 pt-5 pb-6 mx-auto mt-8 mb-6 rounded-none shadow-xl sm:rounded-lg sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12 sm:px-6 text-center">
+          <h1 className="mb-4 text-lg font-semibold text-center text-gray-600">
+            Registration
+          </h1>
+          <div className="auth-container">
+            {error && <p className="error-message">{error}</p>}
+            <div className="mx-8">
+              <PhoneInput
+                country={"vn"}
+                value={phoneNumber}
+                onChange={(phone) => setPhoneNumber("+" + phone)}
+              />
+            </div>
+            <div id="sign-in-button"></div>
+            <br></br>
+            <Button onClick={sendOtp}>
+              <span>Send code</span>
+            </Button>
+            <br></br>
+            <br></br>
+            <Input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              label="name"
+              required
+            />
+            <br></br>
+            <Input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              label="Email"
+              required
+            />
+            <br></br>
+            <Input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              label="password"
+              required
+            />
+            <br></br>
+            <OtpInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              renderSeparator={<span>-</span>}
+              renderInput={(props) => <input {...props} />}
+              inputStyle={{ width: "100%", height: "50px" }}
+            />
+            <br></br>
+            <Button fullWidth onClick={handleVerifyOTP}>
+              Register
+            </Button>
+          </div>
+        </div>
       </div>
-      <div className="form-group">
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <OtpInput
-        value={otp}
-        onChange={setOtp}
-        numInputs={6}
-        renderSeparator={<span>-</span>}
-        renderInput={(props) => <input {...props} />}
-      />
-      <button onClick={handleVerifyOTP}>
-        <span>Register</span>
-      </button>
-    </div>
+    </section>
   );
 }
 

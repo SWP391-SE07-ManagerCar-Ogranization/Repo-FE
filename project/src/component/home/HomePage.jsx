@@ -1,18 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/Header";
-// import Footer from "../../layouts/Footer";
-import cv from '../../assets/image/cv2.jpg'
-import './style.css'
+import "./style.css";
+import FooterWithSocialLinks from "../../layouts/Footer";
+import { Carousel, Image } from "antd";
+import Bg1 from "../../assets/images/bg_tradition2.png";
+import Bg2 from "../../assets/images/bg_tradition.png";
+import Bg3 from "../../assets/images/xe2.jpg";
 function HomePage() {
+
+  const [visible, setVisible] = useState(false);
+  
   return (
     <>
-      <Header/>
-       {/* Hero Section */}
-       <section className="bg-blue-600 text-white py-20">
+      <Header />
+      <Carousel autoplay autoplaySpeed={3000}>
+        <div
+          className="w-max h-max">
+        <Image
+          preview={{ visible: false }}
+          src={Bg1}
+          onClick={() => setVisible(true)}
+        />
+        </div>
+        <div
+          className="w-max h-max">
+        <Image
+          preview={{ visible: false }}
+          src={Bg1}
+          onClick={() => setVisible(true)}
+        />
+        </div>
+        <div className="w-max h-max">
+        <Image
+          preview={{ visible: false }}
+          
+          src={Bg1}
+          onClick={() => setVisible(true)}
+        />
+        </div>
+      </Carousel>
+
+      <div style={{ display: "none" }}>
+        <Image.PreviewGroup
+          preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
+        >
+          <Image src={Bg1} />
+          <Image src={Bg2}/>
+          <Image src={Bg3}/>
+        </Image.PreviewGroup>
+      </div>
+      <section className="bg-blue-600 text-white py-20">
         <div className="container mx-auto text-center">
           <h2 className="text-5xl font-bold mb-5">Book a Driver Easily</h2>
-          <p className="text-lg mb-5">Reliable and professional drivers at your service, anytime, anywhere.</p>
-          <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-gray-200">Get Started</button>
+          <p className="text-lg mb-5">
+            Reliable and professional drivers at your service, anytime,
+            anywhere.
+          </p>
+          <button className="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-gray-200">
+            Get Started
+          </button>
         </div>
       </section>
 
@@ -35,13 +81,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-10">
-        <div className="container mx-auto text-center">
-          <p>&copy; 2024 BookYourDriver. All rights reserved.</p>
-        </div>
-      </footer>
-
+      <FooterWithSocialLinks />
     </>
   );
 }
