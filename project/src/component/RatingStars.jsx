@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 function RatingStars ( ) {
-   
-
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
   
     return (
       <div className="star-rating">
