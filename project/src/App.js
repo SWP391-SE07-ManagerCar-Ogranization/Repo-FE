@@ -61,10 +61,7 @@ function App() {
                     element={<SearchGroupCar />}
                   />
                   <Route path="/mytrip/:id" element={<Mytrip />} />
-                  <Route
-                    path="/listGroupCar/:userString"
-                    element={<ListGroupCar />}
-                  />
+                  <Route path="/listGroupCar/:groupCarAndUserString" element={<ListGroupCar/>} />
                 </>
               )}
               {isAuthenticated === "DRIVER" && (
