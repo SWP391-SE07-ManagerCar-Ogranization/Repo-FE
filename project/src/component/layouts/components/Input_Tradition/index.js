@@ -3,16 +3,17 @@ import PropTypes from "prop-types";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 function Input_Tradition(props) {
-  const { label, placeholder, setPickup, setEnd } = props;
+  const { label, placeholder, setPickup, setEnd, name, value, onChange, type } =
+    props;
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    if (setPickup) {
-      setPickup(value);
-    } else if (setEnd) {
-      setEnd(value);
-    }
-  };
+  // const handleChange = (e) => {
+  //   const value = e.target.value;
+  //   if (setPickup) {
+  //     setPickup(value);
+  //   } else if (setEnd) {
+  //     setEnd(value);
+  //   }
+  // };
 
   return (
     <div>
@@ -23,7 +24,11 @@ function Input_Tradition(props) {
           id="start-input"
           className="rounded-md w-[200px] h-[40px] border-vien"
           placeholder={placeholder}
-          onChange={handleChange}
+          // onChange={handleChange}
+          name={name}
+          value={value}
+          onChange={onChange}
+          type={type}
         />
       </div>
     </div>

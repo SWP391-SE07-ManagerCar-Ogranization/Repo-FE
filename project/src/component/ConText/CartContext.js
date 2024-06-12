@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
-export function ThemeProvider({ children }) {
+export function ThemeProviderConfig({ children }) {
   const [theme, setTheme] = useState({ he: "hellow" });
 
   return (

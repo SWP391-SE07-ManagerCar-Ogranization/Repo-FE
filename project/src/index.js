@@ -3,20 +3,28 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import GlobalStyles from "./component/GlobalStyles";
-import { ThemeProvider } from "./component/ConText/CartContext";
-import { BrowserRouter } from "react-router-dom"; // Đảm bảo import đúng từ file CartContext
+
+import { ThemeProviderConfig } from "./component/ConText/CartContext";
+
+import { ThemeProvider } from "@material-tailwind/react";
+
+import { MaterialTailwindControllerProvider } from "./context";
+import { ThemeProviderDo } from "./context/accountData";
+// import GlobalStyles from "./component/GlobalStyles";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider>
-        <GlobalStyles>
-          <App />
-        </GlobalStyles>
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProviderConfig>
+    <ThemeProvider>
+      <ThemeProviderDo>
+      <MaterialTailwindControllerProvider>
+      <App />
+      </MaterialTailwindControllerProvider>
+      </ThemeProviderDo>
+    </ThemeProvider>
+    </ThemeProviderConfig>
   </React.StrictMode>
 );
 
