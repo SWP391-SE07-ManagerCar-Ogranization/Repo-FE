@@ -3,7 +3,7 @@ import Hero from '../Hero'
 import Bookingcarpool from '../../../pages/bookingcarpool'
 import Header from '../../../layouts/Header'
 
-const Home = () => {
+const HomeCarPool = () => {
   return (
     <div>
       <Header/>
@@ -14,4 +14,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomeCarPool

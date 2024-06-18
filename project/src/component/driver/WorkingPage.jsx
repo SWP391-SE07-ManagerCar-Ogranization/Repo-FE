@@ -11,28 +11,24 @@ const WorkingPage = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [driverProfile, setDriverProfile] = useState({});
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    image: "",
-    driverDetail: {
-    }
-  });
+  const [userData, setUserData] = useState();
+  const [status, setStatus] = useState(false);                        
   const token = localStorage.getItem("token");
   useEffect(() => {
-    fetchUserDataById();
+    const fetchStatusDriver = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await UserService.getYourProfile(token);
+        setStatus( response.account.driverDetail.workingStatus);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchStatusDriver();                 
   }, []);
+console.log(status)
 
-  const fetchUserDataById = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await UserService.getYourProfile(token);
-      const { name, email, image,driverDetail } = response.account;
-      setUserData({ name, email, image, driverDetail});
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+  
 
   const handleStatusChange = async (checked) => {
     console.log(driverProfile);
@@ -80,18 +76,12 @@ const WorkingPage = () => {
               <div>
               Working Status:
               </div>
-              {(driverProfile.workingStatus === true) ? 
               <Switch
               checkedChildren={<CheckOutlined />}
               unCheckedChildren={<CloseOutlined />}
-              defaultChecked
-              onChange={handleStatusChange}
-            /> : 
-            <Switch
-            checkedChildren={<CheckOutlined />}
-            unCheckedChildren={<CloseOutlined />}
-            onChange={handleStatusChange}
-          />}
+              defaultChecked={status}
+              // onChange={handleStatusChange}
+            /> 
               </Space>
           </div>
         </Content>

@@ -15,10 +15,10 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronDownIcon,
   Cog6ToothIcon,
-  InboxArrowDownIcon,
   LifebuoyIcon,
   PowerIcon,
   UserCircleIcon,
+  WalletIcon
 } from "@heroicons/react/24/solid";
 import * as UserService from "../service/UserService";
 import { toast } from "react-toastify";
@@ -45,9 +45,9 @@ function ProfileMenu() {
       path: `update-user/${profileInfo?.accountId}`,
     },
     {
-      label: "Inbox",
-      icon: InboxArrowDownIcon,
-      path: "/profile",
+      label: "Wallet",
+      icon: WalletIcon,
+      path: "/wallet/your-wallet",
     },
     {
       label: "Help",

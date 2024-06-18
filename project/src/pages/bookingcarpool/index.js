@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from "react";
+import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import "leaflet-control-geocoder/dist/Control.Geocoder.js";
+// import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import tradition2 from "../../assets/images/bg_tradition2.png";
 import Input_Tradition from "../../component/layouts/components/Input_Tradition";
 import DriverType from "../../component/layouts/components/driverType";

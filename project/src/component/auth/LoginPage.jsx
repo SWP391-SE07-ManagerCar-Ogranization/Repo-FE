@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { SignupValidation } from "../../config/SignupValidation";
 import { GoogleLogin } from "@react-oauth/google";
@@ -7,15 +7,21 @@ import * as UserService from "../../service/UserService";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/icon/logo.svg";
 import { toast } from "react-toastify";
+import { useAuth } from "../../routes/AuthProvider";
 
 function LoginPage() {
   const [error, setError] = useState("");
+  const role = useAuth();
   const navigate = useNavigate();
   const initValues = {
     email: "",
     password: "",
   };
-
+  useEffect(() => {
+    if (role !== null) {
+      navigate("/");
+    }
+  }, [navigate, role]);
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initValues,
     validationSchema: SignupValidation,
@@ -26,13 +32,13 @@ function LoginPage() {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role.roleName);
         toast.success("Login Sucessfully !");
-        const evt = new CustomEvent("storage", {});
-        window.dispatchEvent(evt);
         if('ADMIN' === (userData.role.roleName)) {
           navigate('/dashboard');
+          window.location.reload();
         }
         else {
           navigate("/");
+          window.location.reload();
         }
       } else {
         setError("Invalid email or password");
@@ -46,10 +52,9 @@ function LoginPage() {
       if (userData.token) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role.roleName);
-        const evt = new CustomEvent("storage", {});
-        window.dispatchEvent(evt);
         toast.success("Login Sucessfully !");
         navigate("/");
+        window.location.reload();
       } else {
         setError(userData.message);
       }

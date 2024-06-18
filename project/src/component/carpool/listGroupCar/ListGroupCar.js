@@ -12,6 +12,7 @@ import "./App.css"
 import LeafletGeocoder from '../map/LeafletGeocoder';
 import LeafletRoutingMachine from '../map/LeafletRoutingMachine';
 import * as TransactionService from '../../../service/TransactionService'
+import * as PaymentService from '../../../service/PaymentService'
 
 function ListGroupCar() {
   const [userObject, setUserObject] = useState({});
@@ -43,11 +44,10 @@ function ListGroupCar() {
     startPoint: startPoint,
     endPoint: endPoint,
     timeStart: '',
-    account: {},
-    driverDetail: {},
+    accountId: '',
+    driverDetailId: '',
     amount: "",
-    paymentMethod: '',
-    driverType: ''
+    paymentMethod: '2'
   });
   const handleRouteFound = (summary) => {
     setDistance((summary.totalDistance / 1000).toFixed(2));
@@ -58,12 +58,19 @@ function ListGroupCar() {
 
   const handleSubmit = async (e) => {
     try {
-      const token = localStorage.getItem("token");
       await TransactionService.addTrans(resrep);
     } catch (error) {
       console.error( error);
     }
   };
+  const handlePayment = async (e) => {
+    try {
+      await PaymentService.charge(resrep.amount);
+    } catch (error) {
+      console.error( error);
+    }
+  };
+
 
   const geocodeAddress = (address, callback) => {
     const geocoder = L.Control.Geocoder.nominatim();
@@ -125,7 +132,7 @@ function ListGroupCar() {
         // axios.post(`http://localhost:8080/public/addCustomer/${user.id}/${groupCarData.groupId}`);
         console.log("groupCardata >>> ", groupCarData)
         console.log("userId >>>> ", user.accountId)
-        setResrep({ ...resrep, account: user });
+        setResrep({ ...resrep, accountId: user.accountId });
         setUserObject(user);
         setGroupCarDetail(groupCarData);
         console.log(resrep);
@@ -178,7 +185,7 @@ function ListGroupCar() {
       setStartPoint(start);
       geocodeAddress(groupCar.endPoint, (end) => {
         setEndPoint(end);
-      setResrep({ ...resrep, startPoint: start, endPoint: end });
+      setResrep({ ...resrep, startPoint: start.lat, endPoint: end.lat});
 
       });
     });
@@ -217,6 +224,8 @@ function ListGroupCar() {
         return car;
       });
       // Set updated groupCars state
+      handleSubmit();
+      handlePayment();
       setGroupCars(updatedGroupCars);
     } catch (error) {
       // Alert join fail
