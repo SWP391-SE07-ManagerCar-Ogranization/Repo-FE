@@ -5,6 +5,7 @@ import Header from "../../layouts/Header";
 import { Content, Footer } from "antd/es/layout/layout";
 import FooterWithSocialLinks from "../../layouts/Footer";
 import * as UserService from '../../service/UserService'
+import * as DriverService from '../../service/DriverService'
 
 const WorkingPage = () => {
   const {
@@ -33,6 +34,7 @@ console.log(status)
   const handleStatusChange = async (checked) => {
     console.log(driverProfile);
     console.log(`switch to ${checked}`);
+    await DriverService.setWorkingStatus(localStorage.getItem('token'), 'false');
     await setDriverProfile((prev) => ({ ...prev, workingStatus: checked }));
     await handleSubmit();
   };
@@ -79,8 +81,8 @@ console.log(status)
               <Switch
               checkedChildren={<CheckOutlined />}
               unCheckedChildren={<CloseOutlined />}
-              defaultChecked={status}
-              // onChange={handleStatusChange}
+              checked={status}
+              onChange={handleStatusChange}
             /> 
               </Space>
           </div>
