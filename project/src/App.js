@@ -15,7 +15,6 @@ function App() {
           path="/"
           element={<BookingDriverInvoice></BookingDriverInvoice>}
         />
-        {/* <Route path="/showmap" element={<MapBox></MapBox>} /> */}
       </Routes>
     </div>
   );
