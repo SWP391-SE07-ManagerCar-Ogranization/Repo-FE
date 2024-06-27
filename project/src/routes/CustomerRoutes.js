@@ -11,92 +11,93 @@ import Mytrip from "../component/carpool/Mytrip";
 import ListGroupCar from "../component/carpool/listGroupCar/ListGroupCar";
 import Success from "../layouts/payment/Success";
 import Booking from "../pages/BookingDriverInvoice/Car";
+import BookingTraditionnel from "../pages/BookingDriverInvoice/Car";
 
 const CustomerRoutes = () => {
-  return (
-    <Routes>
-      <Route
-        path="/update-user/:userId"
-        element={
-          <ProtectedRoute roles={["CUSTOMER", "DRIVER"]}>
+  return {
+    children: [
+      {
+        path: "/update-user/:userId",
+        element: (
+          <ProtectedRoute roles={["CUSTOMER","DRIVER"]}>
             <UpdateProfile />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute roles={["CUSTOMER", "DRIVER"]}>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute roles={["CUSTOMER","DRIVER"]}>
             <ProfilePage />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/home-car-pool"
-        element={
+        ),
+      },
+      {
+        path: "/home-car-pool",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <HomeCarPool />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/wallet/your-wallet"
-        element={
+        ),
+      },
+      {
+        path: "/wallet/your-wallet",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <WalletPage />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/wallet/add-money-to-balance"
-        element={
+        ),
+      },
+      {
+        path: "/wallet/add-money-to-balance",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <SystemCharge />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/payment/result/success"
-        element={
+        ),
+      },
+      {
+        path: "/payment/result/success",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <Success />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/searchGroupCar/:groupCarAndUserString"
-        element={
+        ),
+      },
+      {
+        path: "/searchGroupCar/:groupCarAndUserString",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <SearchGroupCar />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/mytrip/:accountId"
-        element={
+        ),
+      },
+      {
+        path: "/mytrip/:accountId",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <Mytrip />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/listGroupCar/:groupCarAndUserString"
-        element={
+        ),
+      },
+      {
+        path: "/listGroupCar/:groupCarAndUserString",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
             <ListGroupCar />
           </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/booking-driver"
-        element={
+        ),
+      },
+      {
+        path: "/booking-driver",
+        element: (
           <ProtectedRoute roles={["CUSTOMER"]}>
-            <Booking />
+            <BookingTraditionnel />
           </ProtectedRoute>
-        }
-      />
-    </Routes>
-  );
+        ),
+      },
+    ],
+  };
 };
 
 export default CustomerRoutes;

@@ -43,11 +43,6 @@ const appRoutes = createBrowserRouter([
     element: <Navigate to="/404-not-found" replace />,
   },
   {
-    path: "/booking-driver",
-    element: <BookingTraditionnel />,
-  },
-
-  {
     path: "/404-not-found",
     element: <Page404 />,
   },
