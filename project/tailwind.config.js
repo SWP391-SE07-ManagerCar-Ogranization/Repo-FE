@@ -4,7 +4,12 @@ const withMT = require("@material-tailwind/react/utils/withMT");
 module.exports = withMT({
   content: ["./src/**/*.{html,js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+    },
+    fontFamily: {
+      volkhov: ["Volkhov"],
+      casanova: ["Casanova Scotia"]
+    }
   },
   plugins: [],
 })
