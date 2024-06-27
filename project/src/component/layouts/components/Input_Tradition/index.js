@@ -3,16 +3,8 @@ import PropTypes from "prop-types";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
 function Input_Tradition(props) {
-  const { label, placeholder, setPickup, setEnd } = props;
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    if (setPickup) {
-      setPickup(value);
-    } else if (setEnd) {
-      setEnd(value);
-    }
-  };
+  const { label, placeholder, name, value, onChange, type, handleChange } =
+    props;
 
   return (
     <div>
