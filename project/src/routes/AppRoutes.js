@@ -11,6 +11,8 @@ import AdminRoutes from "./AdminRoutes";
 import DriverRoutes from "./DriverRoutes";
 import CustomerRoutes from "./CustomerRoutes";
 
+import BookingTraditionnel from "../pages/BookingDriverInvoice/Car";
+
 const appRoutes = createBrowserRouter([
   {
     path: "/",
@@ -40,6 +42,11 @@ const appRoutes = createBrowserRouter([
     path: "/*",
     element: <Navigate to="/404-not-found" replace />,
   },
+  {
+    path: "/booking-driver",
+    element: <BookingTraditionnel />,
+  },
+
   {
     path: "/404-not-found",
     element: <Page404 />,
